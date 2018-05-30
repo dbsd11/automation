@@ -12,6 +12,16 @@
         <module>automation-executor</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>group.bison</groupId>
+                <artifactId>automation-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <finalName>${project.name}</finalName>
         <plugins>

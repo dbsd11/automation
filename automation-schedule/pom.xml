@@ -9,4 +9,11 @@
     </parent>
 
     <artifactId>automation-schedule</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>group.bison</groupId>
+            <artifactId>automation-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>
