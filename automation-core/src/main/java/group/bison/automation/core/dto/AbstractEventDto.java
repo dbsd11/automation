@@ -1,8 +1,8 @@
-package group.bison.automation.core.event;
+package group.bison.automation.core.dto;
 
 import java.util.UUID;
 
-public abstract class AbstractEvent<T> {
+public abstract class AbstractEventDto<T> {
     private String id;
     private Long timestamp;
 
@@ -11,7 +11,7 @@ public abstract class AbstractEvent<T> {
     private Boolean orderly;
     private T source;
 
-    public AbstractEvent(String parentId, String taskId, Boolean orderly) {
+    public AbstractEventDto(String parentId, String taskId, Boolean orderly) {
         this.id = UUID.randomUUID().toString();
         this.timestamp = System.currentTimeMillis();
         this.parentId = parentId;
