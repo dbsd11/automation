@@ -1,6 +1,6 @@
 package group.bison.automation.schedule.common;
 
-import group.bison.automation.core.task.AbstractTask;
+import group.bison.automation.common.task.AbstractTask;
 
 import java.util.stream.Stream;
 

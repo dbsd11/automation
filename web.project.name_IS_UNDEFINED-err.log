@@ -1,0 +1,22 @@
+ERROR [automation-executor] 2018-06-04 12:06:52.308
+                [main]   
+                group.bison.automation.executor.meshnet.utils.NetUtil.getLanIP:26 - Connection timed out: connect
+java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method) ~[na:na]
+	at java.net.DualStackPlainSocketImpl.socketConnect(Unknown Source) ~[na:na]
+	at java.net.AbstractPlainSocketImpl.doConnect(Unknown Source) ~[na:na]
+	at java.net.AbstractPlainSocketImpl.connectToAddress(Unknown Source) ~[na:na]
+	at java.net.AbstractPlainSocketImpl.connect(Unknown Source) ~[na:na]
+	at java.net.PlainSocketImpl.connect(Unknown Source) ~[na:na]
+	at java.net.SocksSocketImpl.connect(Unknown Source) ~[na:na]
+	at java.net.Socket.connect(Unknown Source) ~[na:na]
+	at java.net.Socket.connect(Unknown Source) ~[na:na]
+	at java.net.Socket.<init>(Unknown Source) ~[na:na]
+	at java.net.Socket.<init>(Unknown Source) ~[na:na]
+	at group.bison.automation.executor.meshnet.utils.NetUtil.getLanIP(NetUtil.java:23) [classes/:na]
+	at group.bison.automation.executor.meshnet.utils.NetUtil.main(NetUtil.java:33) [classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+	at java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:144) [idea_rt.jar:na]

@@ -1,4 +1,4 @@
-package group.bison.automation.core.cmd;
+package group.bison.automation.common.cmd;
 
 public class EventCommand extends AbstractCommand {
 

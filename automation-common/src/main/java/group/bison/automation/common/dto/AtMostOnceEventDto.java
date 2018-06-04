@@ -1,4 +1,4 @@
-package group.bison.automation.core.dto;
+package group.bison.automation.common.dto;
 
 public class AtMostOnceEventDto<T> extends AbstractEventDto<T>{
 

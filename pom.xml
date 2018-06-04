@@ -7,7 +7,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>automation-core</module>
+        <module>automation-common</module>
         <module>automation-schedule</module>
         <module>automation-executor</module>
     </modules>
@@ -16,7 +16,7 @@
         <dependencies>
             <dependency>
                 <groupId>group.bison</groupId>
-                <artifactId>automation-core</artifactId>
+                <artifactId>automation-common</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
@@ -24,6 +24,11 @@
 
     <build>
         <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

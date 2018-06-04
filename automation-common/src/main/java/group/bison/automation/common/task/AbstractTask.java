@@ -1,4 +1,4 @@
-package group.bison.automation.core.task;
+package group.bison.automation.common.task;
 
 public abstract class AbstractTask {
     private String id;
