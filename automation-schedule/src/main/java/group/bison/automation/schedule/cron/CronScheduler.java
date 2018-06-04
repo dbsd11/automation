@@ -1,16 +1,16 @@
 package group.bison.automation.schedule.cron;
 
 import com.lmax.disruptor.dsl.Disruptor;
-import group.bison.automation.core.event.CronEvent;
+import group.bison.automation.core.dto.AbstractEventDto;
 
 public class CronScheduler {
-    private Disruptor<CronEvent> disruptor;
+    private Disruptor<AbstractEventDto> disruptor;
 
-    public Disruptor<CronEvent> getDisruptor() {
+    public Disruptor<AbstractEventDto> getDisruptor() {
         return disruptor;
     }
 
-    public void setDisruptor(Disruptor<CronEvent> disruptor) {
+    public void setDisruptor(Disruptor<AbstractEventDto> disruptor) {
         this.disruptor = disruptor;
     }
 }

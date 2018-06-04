@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public abstract class AbstractEventDto<T> {
     private String id;
+    private String name;
     private Long timestamp;
 
     private String parentId;
@@ -11,9 +12,10 @@ public abstract class AbstractEventDto<T> {
     private Boolean orderly;
     private T source;
 
-    public AbstractEventDto(String parentId, String taskId, Boolean orderly) {
+    public AbstractEventDto(String name, String parentId, String taskId, Boolean orderly) {
         this.id = UUID.randomUUID().toString();
         this.timestamp = System.currentTimeMillis();
+        this.name = name;
         this.parentId = parentId;
         this.taskId = taskId;
         this.orderly = orderly;
@@ -21,6 +23,14 @@ public abstract class AbstractEventDto<T> {
 
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
     }
 
     public String getParentId() {
@@ -33,10 +43,6 @@ public abstract class AbstractEventDto<T> {
 
     public Boolean getOrderly() {
         return orderly;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
     }
 
     public T getSource() {
