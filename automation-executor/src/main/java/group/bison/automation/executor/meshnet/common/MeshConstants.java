@@ -8,4 +8,5 @@ public interface MeshConstants {
     int netPort = 18181;
     String subnet = "executor";
     String netVersion = "1.0";
+    int netAlpha = 3;
 }
