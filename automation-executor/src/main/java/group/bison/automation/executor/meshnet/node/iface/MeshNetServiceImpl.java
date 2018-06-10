@@ -27,31 +27,39 @@ public class MeshNetServiceImpl implements MeshNetService.Iface {
 
     @Override
     public void whisper(InternalMessage message) throws TException {
-        LOG.info("handle whisper message size:{}", message.getBody().length);
+        LOG.info("handle whisper message type:{} sender:{} size:{}", message.getMessageType(), message.getSender(), message.getBody().length);
 
         for (MessageProcessor messageProcessor : messageProcessorList) {
             try {
                 if (messageProcessor.process(message)) {
-                    break;
+                    return;
                 }
             } catch (Exception e) {
                 LOG.error(e.getMessage(), e);
             }
         }
+
+        if (messageProcessorList.size() != 0) {
+            messageProcessorList.get(0).send(message, false);
+        }
     }
 
     @Override
     public void broadcast(InternalMessage message) throws TException {
-        LOG.info("handle broadcast message size:{}", message.getBody().length);
+        LOG.info("handle broadcast message type:{} sender:{} size:{}", message.getMessageType(), message.getSender(), message.getBody().length);
 
         for (MessageProcessor messageProcessor : messageProcessorList) {
             try {
                 if (messageProcessor.process(message)) {
-                    break;
+                    return;
                 }
             } catch (Exception e) {
                 LOG.error(e.getMessage(), e);
             }
+        }
+
+        if (messageProcessorList.size() != 0) {
+            messageProcessorList.get(0).send(message, true);
         }
     }
 
