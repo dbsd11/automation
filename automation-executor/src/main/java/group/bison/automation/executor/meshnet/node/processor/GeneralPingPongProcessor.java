@@ -1,4 +1,4 @@
-package group.bison.automation.executor.meshnet.node.process;
+package group.bison.automation.executor.meshnet.node.processor;
 
 import group.bison.automation.executor.meshnet.common.PingPongProcessor;
 import group.bison.automation.executor.meshnet.node.NetNode;

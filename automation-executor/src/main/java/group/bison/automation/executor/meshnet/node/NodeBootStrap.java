@@ -1,11 +1,13 @@
 package group.bison.automation.executor.meshnet.node;
 
 import group.bison.automation.executor.meshnet.common.MeshConstants;
-import group.bison.automation.executor.meshnet.node.process.BroadcastMessageProcessor;
-import group.bison.automation.executor.meshnet.node.process.GeneralPingPongProcessor;
-import group.bison.automation.executor.meshnet.node.process.WhisperMessageProcessor;
-import group.bison.automation.executor.meshnet.node.route.MemRouteManager;
+import group.bison.automation.executor.meshnet.common.MeshNetServiceManager;
 import group.bison.automation.executor.meshnet.common.RouteManager;
+import group.bison.automation.executor.meshnet.node.manager.MemMeshNetServiceManager;
+import group.bison.automation.executor.meshnet.node.manager.MemRouteManager;
+import group.bison.automation.executor.meshnet.node.processor.BroadcastMessageProcessor;
+import group.bison.automation.executor.meshnet.node.processor.GeneralPingPongProcessor;
+import group.bison.automation.executor.meshnet.node.processor.WhisperMessageProcessor;
 import group.bison.automation.executor.meshnet.utils.NetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,9 @@ public class NodeBootStrap {
 
         RouteManager routeManager = new MemRouteManager();
         netNode.setRouteManager(routeManager);
+
+        MeshNetServiceManager meshNetServiceManager = new MemMeshNetServiceManager();
+        netNode.setMeshNetServiceManager(meshNetServiceManager);
 
         netNode.setMessageProcessorList(Arrays.asList(new WhisperMessageProcessor(netNode), new BroadcastMessageProcessor(netNode)));
         netNode.setPingPongProcessor(new GeneralPingPongProcessor(netNode));

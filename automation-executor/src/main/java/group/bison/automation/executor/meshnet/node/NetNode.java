@@ -1,5 +1,6 @@
 package group.bison.automation.executor.meshnet.node;
 
+import group.bison.automation.executor.meshnet.common.MeshNetServiceManager;
 import group.bison.automation.executor.meshnet.node.iface.MeshNetServiceImpl;
 import group.bison.automation.executor.meshnet.common.MessageProcessor;
 import group.bison.automation.executor.meshnet.common.PingPongProcessor;
@@ -15,6 +16,7 @@ public class NetNode {
     private String id;
     private Long timestamp;
     private RouteManager routeManager;
+    private MeshNetServiceManager meshNetServiceManager;
     private List<MessageProcessor> messageProcessorList;
     private PingPongProcessor pingPongProcessor;
     private MeshNetServiceImpl localMeshNetService;
@@ -50,6 +52,14 @@ public class NetNode {
 
     public void setRouteManager(RouteManager routeManager) {
         this.routeManager = routeManager;
+    }
+
+    public MeshNetServiceManager getMeshNetServiceManager() {
+        return meshNetServiceManager;
+    }
+
+    public void setMeshNetServiceManager(MeshNetServiceManager meshNetServiceManager) {
+        this.meshNetServiceManager = meshNetServiceManager;
     }
 
     public List<MessageProcessor> getMessageProcessorList() {

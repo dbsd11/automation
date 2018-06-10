@@ -1,8 +1,10 @@
-package group.bison.automation.executor.meshnet.node.process;
+package group.bison.automation.executor.meshnet.node.processor;
 
 import group.bison.automation.common.exception.BusinessException;
+import group.bison.automation.executor.meshnet.common.MeshConstants;
 import group.bison.automation.executor.meshnet.common.MessageProcessor;
 import group.bison.automation.executor.meshnet.node.NetNode;
+import group.bison.automation.executor.meshnet.utils.NetUtil;
 import group.bison.thrift.automation.meshnet.InternalMessage;
 import group.bison.thrift.automation.meshnet.MeshNetService;
 import io.reactivex.functions.Function;
@@ -30,9 +32,10 @@ public abstract class AbstractMessageProcessor implements MessageProcessor {
 
     @Override
     public boolean process(InternalMessage message) throws BusinessException {
-        if (!StringUtils.isEmpty(message.getReceiver()) && !message.getReceiver().equals(netNode.getId())) {
+        if (!StringUtils.isEmpty(message.getReceiver()) && !message.getReceiver().equals(netNode.getId()) && !message.getReceiver().equals(String.join(NetUtil.getLanIP(), ":", String.valueOf(MeshConstants.netPort)))) {
             return false;
         }
+
         boolean success = handleMessage(message);
         if (success && messageIdCallBackMap.containsKey(message.getId())) {
             Function callBack = messageIdCallBackMap.remove(message.getId());
@@ -53,14 +56,15 @@ public abstract class AbstractMessageProcessor implements MessageProcessor {
 
         Boolean success = true;
 
-        if (!broadcast && netNode.getRouteManager().contains(message.getReceiver())) {
+        if (!broadcast && (netNode.getRouteManager().contains(message.getReceiver()) || netNode.getMeshNetServiceManager().contains(message.getReceiver()))) {
             try {
-                netNode.getRouteManager().getMeshNetService(message.getReceiver()).whisper(message);
+                String address = netNode.getRouteManager().contains(message.getReceiver()) ? netNode.getRouteManager().peers(message.getReceiver()).toArray(new String[0])[0] : message.getReceiver();
+                netNode.getMeshNetServiceManager().get(address).whisper(message);
             } catch (TException e) {
                 success = false;
             }
         } else {
-            for (MeshNetService.Iface meshNetService : netNode.getRouteManager().getMeshNetServiceList()) {
+            for (MeshNetService.Iface meshNetService : netNode.getMeshNetServiceManager().getAll()) {
                 try {
                     meshNetService.broadcast(message);
                     success = true;
@@ -79,6 +83,10 @@ public abstract class AbstractMessageProcessor implements MessageProcessor {
 
     @Override
     public boolean sendAsync(InternalMessage message, Boolean broadcast, Function<InternalMessage, Boolean> func) throws BusinessException {
+        if (messageIdCallBackMap.containsKey(message.getId())) {
+            throw new BusinessException("重复发送异步消息 id:" + message.getId());
+        }
+
         boolean success = send(message, broadcast);
         if (message.getSender().equals(netNode.getId())) {
             messageIdCallBackMap.put(message.getId(), func);

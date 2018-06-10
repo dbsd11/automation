@@ -1,8 +1,5 @@
 package group.bison.automation.executor.meshnet.common;
 
-import group.bison.thrift.automation.meshnet.MeshNetService;
-
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,15 +9,11 @@ public interface RouteManager {
 
     boolean contains(String node);
 
-    void register(String node, MeshNetService.Iface meshNetService, String address);
+    void register(String node, String address);
 
     void unregister(String node);
 
-    void update(String node, MeshNetService.Iface meshNetService, String address);
+    void update(String node, String address);
 
     Set<String> peers(String node);
-
-    MeshNetService.Iface getMeshNetService(String node);
-
-    List<MeshNetService.Iface> getMeshNetServiceList();
 }

@@ -1,4 +1,4 @@
-package group.bison.automation.executor.meshnet.node.process;
+package group.bison.automation.executor.meshnet.node.processor;
 
 import com.alibaba.fastjson.JSON;
 import group.bison.automation.common.exception.BusinessException;
@@ -22,7 +22,7 @@ public class BroadcastMessageProcessor extends AbstractMessageProcessor {
             String nodeId = new String(message.getBody());
             if (nodeId.equalsIgnoreCase("*")) {
                 InternalMessage responseMessage = new InternalMessage(message.getId(), System.currentTimeMillis());
-                responseMessage.setMessageType(MessageType.RESPONSE.toString());
+                responseMessage.setMessageType(MessageType.RESPONSE.name());
                 responseMessage.setSender(netNode.getId());
                 responseMessage.setReceiver(message.getSender());
                 responseMessage.setBody(JSON.toJSONBytes(netNode.getRouteManager().peers("local")));
@@ -30,7 +30,7 @@ public class BroadcastMessageProcessor extends AbstractMessageProcessor {
             } else {
                 if (netNode.getRouteManager().contains(nodeId)) {
                     InternalMessage responseMessage = new InternalMessage(message.getId(), System.currentTimeMillis());
-                    responseMessage.setMessageType(MessageType.RESPONSE.toString());
+                    responseMessage.setMessageType(MessageType.RESPONSE.name());
                     responseMessage.setSender(netNode.getId());
                     responseMessage.setReceiver(message.getSender());
                     responseMessage.setBody(JSON.toJSONBytes(netNode.getRouteManager().peers(nodeId)));
@@ -45,7 +45,7 @@ public class BroadcastMessageProcessor extends AbstractMessageProcessor {
                 requestMessage2.setReceiver(null);
                 return sendAsync(message, true, message1 -> {
                     InternalMessage responseMessage = new InternalMessage(message1.getId(), System.currentTimeMillis());
-                    responseMessage.setMessageType(MessageType.RESPONSE.toString());
+                    responseMessage.setMessageType(MessageType.RESPONSE.name());
                     responseMessage.setSender(netNode.getId());
                     responseMessage.setReceiver(message1.getSender());
                     responseMessage.setBody(JSON.toJSONBytes(netNode.getRouteManager().peers(nodeId)));
