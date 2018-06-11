@@ -2,8 +2,10 @@ package group.bison.automation.executor.meshnet.node;
 
 import group.bison.automation.executor.meshnet.common.MeshConstants;
 import group.bison.automation.executor.meshnet.common.MeshNetServiceManager;
+import group.bison.automation.executor.meshnet.common.NodeStorageManager;
 import group.bison.automation.executor.meshnet.common.RouteManager;
 import group.bison.automation.executor.meshnet.node.manager.MemMeshNetServiceManager;
+import group.bison.automation.executor.meshnet.node.manager.MemNodeStorageManager;
 import group.bison.automation.executor.meshnet.node.manager.MemRouteManager;
 import group.bison.automation.executor.meshnet.node.processor.BroadcastMessageProcessor;
 import group.bison.automation.executor.meshnet.node.processor.GeneralPingPongProcessor;
@@ -30,10 +32,15 @@ public class NodeBootStrap {
         MeshNetServiceManager meshNetServiceManager = new MemMeshNetServiceManager();
         netNode.setMeshNetServiceManager(meshNetServiceManager);
 
+        NodeStorageManager nodeStorageManager = new MemNodeStorageManager();
+        netNode.setNodeStorageManager(nodeStorageManager);
+
         netNode.setMessageProcessorList(Arrays.asList(new WhisperMessageProcessor(netNode), new BroadcastMessageProcessor(netNode)));
         netNode.setPingPongProcessor(new GeneralPingPongProcessor(netNode));
 
         netNode.doStart();
+
+        LocalNodeProxy.setLocalNode(netNode);
         LOG.info("successful started meshnet node on ip:{} port:{}", NetUtil.getLanIP(), MeshConstants.netPort);
     }
 

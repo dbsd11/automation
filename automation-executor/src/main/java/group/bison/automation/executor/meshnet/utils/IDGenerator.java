@@ -22,11 +22,15 @@ public class IDGenerator {
     }
 
     public static String getNodeId() {
+        return getNodeId(String.join(NetUtil.getLanIP(), ":", String.valueOf(MeshConstants.netPort)));
+    }
+
+    public static String getNodeId(String address) {
         try {
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
             MessageDigest sha384 = MessageDigest.getInstance("SHA-384");
             sha256.update(String.join(MeshConstants.subnet, MeshConstants.netVersion, "ARRAYBUFFER").getBytes());
-            sha384.update(String.join(NetUtil.getLanIP(), String.valueOf(MeshConstants.netPort), Base58Codec.doEncode(sha256.digest()), userSalt).getBytes());
+            sha384.update(String.join(address, Base58Codec.doEncode(sha256.digest()), userSalt).getBytes());
             String nodeId = Base58Codec.doEncode(sha384.digest());
             return nodeId;
         } catch (Exception e) {

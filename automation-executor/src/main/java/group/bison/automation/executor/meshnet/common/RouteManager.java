@@ -16,4 +16,6 @@ public interface RouteManager {
     void update(String node, String address);
 
     Set<String> peers(String node);
+
+    boolean isPeer(String node);
 }
