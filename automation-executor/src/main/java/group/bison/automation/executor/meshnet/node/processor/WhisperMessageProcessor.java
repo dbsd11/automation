@@ -3,7 +3,7 @@ package group.bison.automation.executor.meshnet.node.processor;
 import com.alibaba.fastjson.JSON;
 import group.bison.automation.common.exception.BusinessException;
 import group.bison.automation.executor.meshnet.common.MessageType;
-import group.bison.automation.executor.meshnet.node.LocalNodeProxy;
+import group.bison.automation.executor.meshnet.node.LocalNode;
 import group.bison.automation.executor.meshnet.node.NetNode;
 import group.bison.automation.executor.meshnet.utils.IDGenerator;
 import group.bison.thrift.automation.meshnet.InternalMessage;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by BSONG on 2018/6/7.
  */
-public class WhisperMessageProcessor extends AbstractMessageProcessor {
+public final class WhisperMessageProcessor extends AbstractMessageProcessor {
 
     public WhisperMessageProcessor(NetNode netNode) {
         super(netNode);
@@ -35,7 +35,7 @@ public class WhisperMessageProcessor extends AbstractMessageProcessor {
             handshakeAckMessage.setReceiver(address);
             params.clear();
             params.add(netNode.getId());
-            params.add(LocalNodeProxy.getBindAddress());
+            params.add(LocalNode.getInstance().getBindAddress());
             params.addAll(netNode.getRouteManager().peers("local"));
             handshakeAckMessage.setBody(JSON.toJSONBytes(params));
 
@@ -84,7 +84,7 @@ public class WhisperMessageProcessor extends AbstractMessageProcessor {
                     handShakeMessage.setMessageType(MessageType.HANDSHAKE.name());
                     handShakeMessage.setSender(netNode.getId());
                     handShakeMessage.setReceiver(peer);
-                    handShakeMessage.setBody(JSON.toJSONBytes(Arrays.asList(netNode.getId(), LocalNodeProxy.getBindAddress())));
+                    handShakeMessage.setBody(JSON.toJSONBytes(Arrays.asList(netNode.getId(), LocalNode.getInstance().getBindAddress())));
                     send(handShakeMessage, false);
                 }
             }

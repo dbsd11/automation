@@ -7,6 +7,10 @@ public class ValidationException extends RuntimeException {
 
     private Integer code;
 
+    public ValidationException(String message) {
+        this(-1, message, null);
+    }
+
     public ValidationException(Integer code, String message) {
         this(code, message, null);
     }

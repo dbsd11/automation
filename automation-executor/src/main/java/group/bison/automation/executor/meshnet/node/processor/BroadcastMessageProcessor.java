@@ -9,7 +9,7 @@ import group.bison.thrift.automation.meshnet.InternalMessage;
 /**
  * Created by BSONG on 2018/6/7.
  */
-public class BroadcastMessageProcessor extends AbstractMessageProcessor {
+public final class BroadcastMessageProcessor extends AbstractMessageProcessor {
 
     public BroadcastMessageProcessor(NetNode netNode) {
         super(netNode);

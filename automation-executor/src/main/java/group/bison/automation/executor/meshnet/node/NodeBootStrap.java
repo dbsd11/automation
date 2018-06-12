@@ -2,6 +2,7 @@ package group.bison.automation.executor.meshnet.node;
 
 import group.bison.automation.executor.meshnet.common.MeshConstants;
 import group.bison.automation.executor.meshnet.common.MeshNetServiceManager;
+import group.bison.automation.executor.meshnet.common.MessageProcessor;
 import group.bison.automation.executor.meshnet.common.NodeStorageManager;
 import group.bison.automation.executor.meshnet.common.RouteManager;
 import group.bison.automation.executor.meshnet.node.manager.MemMeshNetServiceManager;
@@ -15,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by BSONG on 2018/6/7.
@@ -35,12 +38,14 @@ public class NodeBootStrap {
         NodeStorageManager nodeStorageManager = new MemNodeStorageManager();
         netNode.setNodeStorageManager(nodeStorageManager);
 
-        netNode.setMessageProcessorList(Arrays.asList(new WhisperMessageProcessor(netNode), new BroadcastMessageProcessor(netNode)));
+        List<MessageProcessor> messageProcessorList = new LinkedList<>(Arrays.asList(new WhisperMessageProcessor(netNode), new BroadcastMessageProcessor(netNode)));
+        messageProcessorList.addAll(LocalNode.CommonMessageProcessorRegistry.getCommonMessageProcessorList());
+        netNode.setMessageProcessorList(messageProcessorList);
         netNode.setPingPongProcessor(new GeneralPingPongProcessor(netNode));
 
         netNode.doStart();
 
-        LocalNodeProxy.setLocalNode(netNode);
+        LocalNode.setLocalNode(netNode);
         LOG.info("successful started meshnet node on ip:{} port:{}", NetUtil.getLanIP(), MeshConstants.netPort);
     }
 

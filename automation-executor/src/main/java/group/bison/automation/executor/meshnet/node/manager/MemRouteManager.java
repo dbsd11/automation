@@ -2,7 +2,7 @@ package group.bison.automation.executor.meshnet.node.manager;
 
 import group.bison.automation.executor.meshnet.common.MeshConstants;
 import group.bison.automation.executor.meshnet.common.RouteManager;
-import group.bison.automation.executor.meshnet.node.LocalNodeProxy;
+import group.bison.automation.executor.meshnet.node.LocalNode;
 import group.bison.automation.executor.meshnet.utils.NodeUtil;
 
 import java.math.BigInteger;
@@ -64,9 +64,9 @@ public class MemRouteManager implements RouteManager {
             return true;
         }
 
-        BigInteger distance = NodeUtil.nodeDistance(LocalNodeProxy.getNodeId(), node);
+        BigInteger distance = NodeUtil.nodeDistance(LocalNode.getInstance().getNodeId(), node);
         for (String peerNode : addressMap.values()) {
-            BigInteger peerDistance = NodeUtil.nodeDistance(LocalNodeProxy.getNodeId(), peerNode);
+            BigInteger peerDistance = NodeUtil.nodeDistance(LocalNode.getInstance().getNodeId(), peerNode);
             if (distance.compareTo(peerDistance) < 0) {
                 return true;
             }

@@ -1,11 +1,11 @@
 package group.bison.automation.executor.meshnet.node;
 
 import group.bison.automation.executor.meshnet.common.MeshNetServiceManager;
-import group.bison.automation.executor.meshnet.common.NodeStorageManager;
-import group.bison.automation.executor.meshnet.node.iface.MeshNetServiceImpl;
 import group.bison.automation.executor.meshnet.common.MessageProcessor;
+import group.bison.automation.executor.meshnet.common.NodeStorageManager;
 import group.bison.automation.executor.meshnet.common.PingPongProcessor;
 import group.bison.automation.executor.meshnet.common.RouteManager;
+import group.bison.automation.executor.meshnet.node.iface.MeshNetServiceImpl;
 import group.bison.automation.executor.meshnet.utils.IDGenerator;
 
 import java.util.List;
@@ -23,12 +23,12 @@ public class NetNode {
     private PingPongProcessor pingPongProcessor;
     private MeshNetServiceImpl localMeshNetService;
 
-    public NetNode() {
+    NetNode() {
         this.id = IDGenerator.getNodeId();
         this.timestamp = System.currentTimeMillis();
     }
 
-    public void doStart() {
+    void doStart() {
         localMeshNetService = new MeshNetServiceImpl();
         localMeshNetService.setMessageProcessorList(messageProcessorList);
         localMeshNetService.setPingPongProcessor(pingPongProcessor);
@@ -36,8 +36,28 @@ public class NetNode {
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutDown));
     }
 
-    public void shutDown() {
+    void shutDown() {
         localMeshNetService.stop();
+    }
+
+    void setRouteManager(RouteManager routeManager) {
+        this.routeManager = routeManager;
+    }
+
+    void setMeshNetServiceManager(MeshNetServiceManager meshNetServiceManager) {
+        this.meshNetServiceManager = meshNetServiceManager;
+    }
+
+    void setNodeStorageManager(NodeStorageManager nodeStorageManager) {
+        this.nodeStorageManager = nodeStorageManager;
+    }
+
+    void setMessageProcessorList(List<MessageProcessor> messageProcessorList) {
+        this.messageProcessorList = messageProcessorList;
+    }
+
+    void setPingPongProcessor(PingPongProcessor pingPongProcessor) {
+        this.pingPongProcessor = pingPongProcessor;
     }
 
     public String getId() {
@@ -52,39 +72,19 @@ public class NetNode {
         return routeManager;
     }
 
-    public void setRouteManager(RouteManager routeManager) {
-        this.routeManager = routeManager;
-    }
-
     public MeshNetServiceManager getMeshNetServiceManager() {
         return meshNetServiceManager;
-    }
-
-    public void setMeshNetServiceManager(MeshNetServiceManager meshNetServiceManager) {
-        this.meshNetServiceManager = meshNetServiceManager;
     }
 
     public NodeStorageManager getNodeStorageManager() {
         return nodeStorageManager;
     }
 
-    public void setNodeStorageManager(NodeStorageManager nodeStorageManager) {
-        this.nodeStorageManager = nodeStorageManager;
-    }
-
     public List<MessageProcessor> getMessageProcessorList() {
         return messageProcessorList;
     }
 
-    public void setMessageProcessorList(List<MessageProcessor> messageProcessorList) {
-        this.messageProcessorList = messageProcessorList;
-    }
-
     public PingPongProcessor getPingPongProcessor() {
         return pingPongProcessor;
-    }
-
-    public void setPingPongProcessor(PingPongProcessor pingPongProcessor) {
-        this.pingPongProcessor = pingPongProcessor;
     }
 }

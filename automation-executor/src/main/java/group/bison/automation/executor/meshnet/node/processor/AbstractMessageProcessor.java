@@ -2,7 +2,7 @@ package group.bison.automation.executor.meshnet.node.processor;
 
 import group.bison.automation.common.exception.BusinessException;
 import group.bison.automation.executor.meshnet.common.MessageProcessor;
-import group.bison.automation.executor.meshnet.node.LocalNodeProxy;
+import group.bison.automation.executor.meshnet.node.LocalNode;
 import group.bison.automation.executor.meshnet.node.NetNode;
 import group.bison.thrift.automation.meshnet.InternalMessage;
 import group.bison.thrift.automation.meshnet.MeshNetService;
@@ -31,7 +31,7 @@ public abstract class AbstractMessageProcessor implements MessageProcessor {
 
     @Override
     public boolean process(InternalMessage message) throws BusinessException {
-        if (!StringUtils.isEmpty(message.getReceiver()) && !message.getReceiver().equals(netNode.getId()) && !message.getReceiver().equals(LocalNodeProxy.getBindAddress())) {
+        if (!StringUtils.isEmpty(message.getReceiver()) && !message.getReceiver().equals(netNode.getId()) && !message.getReceiver().equals(LocalNode.getInstance().getBindAddress())) {
             return false;
         }
 
@@ -49,7 +49,6 @@ public abstract class AbstractMessageProcessor implements MessageProcessor {
 
     protected abstract boolean handleMessage(InternalMessage message) throws BusinessException;
 
-    @Override
     public boolean send(InternalMessage message, Boolean broadcast) throws BusinessException {
         LOG.info("send InternalMessage message broadcast:{} type:{} receiver:{} size:{}", broadcast, message.getMessageType(), message.getReceiver(), message.getBody().length);
 
@@ -84,7 +83,6 @@ public abstract class AbstractMessageProcessor implements MessageProcessor {
         return true;
     }
 
-    @Override
     public boolean sendAsync(InternalMessage message, Boolean broadcast, Function<InternalMessage, Boolean> func) throws BusinessException {
         if (messageIdCallBackMap.containsKey(message.getId())) {
             throw new BusinessException("重复发送异步消息 id:" + message.getId());
