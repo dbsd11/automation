@@ -2,6 +2,7 @@ package group.bison.automation.executor.meshnet.node.manager;
 
 import group.bison.automation.executor.meshnet.common.NodeStorageManager;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,16 @@ public class MemNodeStorageManager implements NodeStorageManager {
 
     private Map<String, String> kvMap = new ConcurrentHashMap<>();
 
+    private Set<String> peerKeys = new HashSet<>();
+
     @Override
     public boolean contains(String key) {
-        return retrieve(key) != null;
+        return peerKeys.contains(key) ? true : retrieve(key) != null;
+    }
+
+    @Override
+    public void add(String key) {
+        peerKeys.add(key);
     }
 
     @Override

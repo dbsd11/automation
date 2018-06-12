@@ -73,8 +73,7 @@ public class WhisperMessageProcessor extends AbstractMessageProcessor {
 
         if (MessageType.valueOf(message.getMessageType()) == MessageType.PEERS) {
             List<String> params = JSON.parseArray(new String(message.getBody()), String.class);
-            List<String> peers = params.subList(0, params.size());
-
+            List<String> peers = params;
             for (String peer : peers) {
                 if (netNode.getRouteManager().isPeer(IDGenerator.getNodeId(peer))) {
                     if (!netNode.getMeshNetServiceManager().contains(peer)) {
@@ -92,19 +91,48 @@ public class WhisperMessageProcessor extends AbstractMessageProcessor {
         }
 
         if (MessageType.valueOf(message.getMessageType()) == MessageType.NOTIFY) {
-            //todo 同步节点存储信息
+            List<String> params = JSON.parseArray(new String(message.getBody()), String.class);
+            List<String> keys = params;
+            for (String key : keys) {
+                if (netNode.getNodeStorageManager().contains(key)) {
+                    continue;
+                }
+                netNode.getNodeStorageManager().add(key);
+            }
         }
 
         if (MessageType.valueOf(message.getMessageType()) == MessageType.STORE) {
-
+            List<String> params = JSON.parseArray(new String(message.getBody()), String.class);
+            String key = params.get(0);
+            String value = params.get(1);
+            if (params.size() == 2) {
+                netNode.getNodeStorageManager().store(key, value);
+            } else {
+                Long expireSeconds = Long.valueOf(params.get(2));
+                netNode.getNodeStorageManager().store(key, value, expireSeconds);
+            }
         }
 
         if (MessageType.valueOf(message.getMessageType()) == MessageType.RETRIEVE) {
+            List<String> params = JSON.parseArray(new String(message.getBody()), String.class);
+            String key = params.get(0);
+            if (!netNode.getNodeStorageManager().contains(key)) {
+                return false;
+            }
 
+            String value = netNode.getNodeStorageManager().retrieve(key);
+            if (value != null) {
+                InternalMessage retrievedMessage = new InternalMessage(IDGenerator.getRandomId(), System.currentTimeMillis());
+                retrievedMessage.setMessageType(MessageType.RETRIEVED.name());
+                retrievedMessage.setSender(netNode.getId());
+                retrievedMessage.setReceiver(message.getSender());
+                retrievedMessage.setBody(JSON.toJSONBytes(Arrays.asList(key, value)));
+                send(retrievedMessage, false);
+            }
         }
 
         if (MessageType.valueOf(message.getMessageType()) == MessageType.RETRIEVED) {
-
+            return true;
         }
 
         if (MessageType.valueOf(message.getMessageType()) == MessageType.DELTA) {

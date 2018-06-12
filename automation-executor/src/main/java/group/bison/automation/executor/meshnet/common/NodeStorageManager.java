@@ -10,6 +10,8 @@ public interface NodeStorageManager {
 
     boolean contains(String key);
 
+    void add(String key);
+
     String store(String key, String value);
 
     String store(String key, String value, Long expireSeconds);

@@ -65,7 +65,11 @@ public abstract class AbstractMessageProcessor implements MessageProcessor {
         } else {
             for (MeshNetService.Iface meshNetService : netNode.getMeshNetServiceManager().getAll()) {
                 try {
-                    meshNetService.broadcast(message);
+                    if (!broadcast) {
+                        meshNetService.whisper(message);
+                    } else {
+                        meshNetService.broadcast(message);
+                    }
                     success = true;
                 } catch (TException e) {
                     success = false;
