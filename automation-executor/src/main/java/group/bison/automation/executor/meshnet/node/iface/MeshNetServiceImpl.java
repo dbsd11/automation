@@ -2,6 +2,8 @@ package group.bison.automation.executor.meshnet.node.iface;
 
 import group.bison.automation.executor.meshnet.common.MessageProcessor;
 import group.bison.automation.executor.meshnet.common.PingPongProcessor;
+import group.bison.automation.executor.meshnet.node.processor.BroadcastMessageProcessor;
+import group.bison.automation.executor.meshnet.node.processor.WhisperMessageProcessor;
 import group.bison.thrift.automation.meshnet.InternalMessage;
 import group.bison.thrift.automation.meshnet.MeshNetService;
 import org.apache.thrift.TException;
@@ -39,8 +41,10 @@ public class MeshNetServiceImpl implements MeshNetService.Iface {
             }
         }
 
-        if (messageProcessorList.size() != 0) {
-            messageProcessorList.get(0).send(message, false);
+        for (MessageProcessor messageProcessor : messageProcessorList) {
+            if (messageProcessor instanceof WhisperMessageProcessor) {
+                ((WhisperMessageProcessor) messageProcessor).send(message, false);
+            }
         }
     }
 
@@ -58,8 +62,10 @@ public class MeshNetServiceImpl implements MeshNetService.Iface {
             }
         }
 
-        if (messageProcessorList.size() != 0) {
-            messageProcessorList.get(0).send(message, true);
+        for (MessageProcessor messageProcessor : messageProcessorList) {
+            if (messageProcessor instanceof BroadcastMessageProcessor) {
+                ((BroadcastMessageProcessor) messageProcessor).send(message, true);
+            }
         }
     }
 
