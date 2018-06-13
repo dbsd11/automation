@@ -21,7 +21,7 @@ public class NetUtil {
 
         try {
             Socket socket = new Socket("220.181.112.244", 80);
-            lanIp = ((InetSocketAddress) socket.getLocalSocketAddress()).getHostName();
+            lanIp = ((InetSocketAddress) socket.getLocalSocketAddress()).getHostString();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             lanIp = "127.0.0.1";
@@ -29,7 +29,7 @@ public class NetUtil {
         return lanIp;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         LOG.info(getLanIP());
     }
 }
