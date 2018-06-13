@@ -1,6 +1,6 @@
 package group.bison.automation.schedule.common;
 
-import group.bison.automation.common.task.AbstractTask;
+import group.bison.automation.common.task.Task;
 
 import java.util.stream.Stream;
 
@@ -9,5 +9,5 @@ import java.util.stream.Stream;
  */
 public interface TaskEventGenerator {
 
-    public Stream generate(AbstractTask task);
+    public Stream generate(Task task);
 }

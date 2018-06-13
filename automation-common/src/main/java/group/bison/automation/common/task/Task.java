@@ -1,6 +1,6 @@
 package group.bison.automation.common.task;
 
-public abstract class AbstractTask {
+public abstract class Task {
     private String id;
     private String name;
     private Integer coreSize;

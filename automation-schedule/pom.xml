@@ -15,5 +15,11 @@
             <groupId>group.bison</groupId>
             <artifactId>automation-common</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java</artifactId>
+            <version>3.0.14</version>
+        </dependency>
     </dependencies>
 </project>

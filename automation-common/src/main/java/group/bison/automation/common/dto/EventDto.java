@@ -2,7 +2,7 @@ package group.bison.automation.common.dto;
 
 import java.util.UUID;
 
-public abstract class AbstractEventDto<T> {
+public abstract class EventDto<T> {
     private String id;
     private String name;
     private Long timestamp;
@@ -12,7 +12,7 @@ public abstract class AbstractEventDto<T> {
     private Boolean orderly;
     private T source;
 
-    public AbstractEventDto(String name, String parentId, String taskId, Boolean orderly) {
+    public EventDto(String name, String parentId, String taskId, Boolean orderly) {
         this.id = UUID.randomUUID().toString();
         this.timestamp = System.currentTimeMillis();
         this.name = name;

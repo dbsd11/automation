@@ -21,21 +21,20 @@ public class PluginManager {
     private static Map<String, PluginClassLoader> pluginMap = new HashMap<>();
     private static String pluginDir = null;
 
-    public static boolean load(String plugin) {
+    public static PluginClassLoader load(String plugin) {
         if (pluginMap.containsKey(plugin)) {
-            return true;
+            return pluginMap.get(plugin);
         }
 
-        boolean success = true;
         try {
             PluginClassLoader pluginClassLoader = new PluginClassLoader();
             pluginClassLoader.addURLFile(new URL(String.join("", "jar:file://", pluginDir, "/", plugin, ".jar!/")));
             pluginMap.put(plugin, pluginClassLoader);
+            return pluginClassLoader;
         } catch (Exception e) {
             LOG.info("Failed to load plugin:{}", plugin);
-            success = false;
+            return null;
         }
-        return success;
     }
 
     public static boolean unload(String plugin) {
@@ -55,15 +54,15 @@ public class PluginManager {
     }
 
 
-    static class PluginClassLoader extends URLClassLoader {
+    public static class PluginClassLoader extends URLClassLoader {
 
         private List<JarURLConnection> cachedJarFiles = new LinkedList<>();
 
-        public PluginClassLoader() {
+        PluginClassLoader() {
             super(new URL[]{}, findParentClassLoader());
         }
 
-        public void addURLFile(URL file) {
+        void addURLFile(URL file) {
             try {
                 // 打开并缓存文件url连接
                 URLConnection uc = file.openConnection();
@@ -80,7 +79,7 @@ public class PluginManager {
         /**
          * 卸载jar包
          */
-        public void unloadJarFiles() {
+        void unloadJarFiles() {
             for (JarURLConnection url : cachedJarFiles) {
                 try {
                     LOG.info("Unloading plugin JAR file {}", url.getJarFile().getName());
