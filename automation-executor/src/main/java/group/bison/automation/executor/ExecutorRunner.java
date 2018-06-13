@@ -29,14 +29,15 @@ public class ExecutorRunner {
                     continue;
                 }
 
-                String[] eventParam = scanner.next().split(" ");
-                if (eventParam[0].equals("new")) {
-                    EventDto eventDto = JSON.parseObject(eventParam[1], EventDto.class);
+                String method = scanner.next();
+                String event = scanner.next();
+                if (method.equalsIgnoreCase("new")) {
+                    EventDto eventDto = JSON.parseObject(event, EventDto.class);
                     executorListener.onEvent(eventDto);
                 }
 
-                if (eventParam[0].equals("kill")) {
-                    EventDto eventDto = JSON.parseObject(eventParam[1], EventDto.class);
+                if (method.equalsIgnoreCase("kill")) {
+                    EventDto eventDto = JSON.parseObject(event, EventDto.class);
                     executorListener.killEvent(eventDto);
                 }
             } catch (Exception e) {
